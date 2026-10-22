@@ -1,12 +1,9 @@
-// Credit: Mateusz Rybczonec
-
 // dash array value is the circumference of the circle radius (here 45)
 const FULL_DASH_ARRAY = 2 * Math.PI * 45;
 // the second limits for color change
 const THRESHOLDS = [10, 5];
 
 function initializeTimer(containerId, timeLimit, startOn) {
-
   let active = true;
   let timePassed = 0;
   let timeLeft = timeLimit;
@@ -72,8 +69,8 @@ function initializeTimer(containerId, timeLimit, startOn) {
 
   function parseTimeInput(val) {
     val = val.trim();
-    if (val.includes(':')) {
-      const parts = val.split(':');
+    if (val.includes(":")) {
+      const parts = val.split(":");
       const m = parseInt(parts[0], 10) || 0;
       const s = parseInt(parts[1], 10) || 0;
       return m * 60 + s;
@@ -89,16 +86,16 @@ function initializeTimer(containerId, timeLimit, startOn) {
       toggleTimer();
     }
     input.value = formatTime(Math.max(timeLeft, 0));
-    svg.style.opacity = '0.2';
-    editDiv.style.display = 'block';
+    svg.style.opacity = "0.2";
+    editDiv.style.display = "block";
     input.focus();
     input.select();
   }
 
   function closeEdit() {
     editing = false;
-    editDiv.style.display = 'none';
-    svg.style.opacity = '1';
+    editDiv.style.display = "none";
+    svg.style.opacity = "1";
   }
 
   function cancelEdit() {
@@ -114,7 +111,8 @@ function initializeTimer(containerId, timeLimit, startOn) {
       timeLimit = totalSeconds;
       timePassed = 0;
       timeLeft = timeLimit;
-      document.getElementById(`${containerId}-label`).innerHTML = formatTime(timeLeft);
+      document.getElementById(`${containerId}-label`).innerHTML =
+        formatTime(timeLeft);
       const path = document.getElementById(`${containerId}-path-remaining`);
       path.classList.remove("lvl0", "lvl1");
       setCircleDasharray();
@@ -128,25 +126,25 @@ function initializeTimer(containerId, timeLimit, startOn) {
     }
   }
 
-  if ( startOn === "interaction" ) {
+  if (startOn === "interaction") {
     toggleTimer();
     startOn = "slide";
   }
 
   function startTimer() {
     ticking = true;
-    if (active && (startOn === 'presentation' || (startOn === 'slide' && !isHidden()))) {
-
+    if (
+      active &&
+      (startOn === "presentation" || (startOn === "slide" && !isHidden()))
+    ) {
       timePassed += 1;
       timeLeft = timeLimit - timePassed;
 
-      document.getElementById(`${containerId}-label`).innerHTML = formatTime(
-        timeLeft
-      );
+      document.getElementById(`${containerId}-label`).innerHTML =
+        formatTime(timeLeft);
 
       setCircleDasharray();
       setRemainingPathColor(timeLeft);
-
     }
     if (timeLeft > 0) {
       setTimeout(startTimer, 1000);
@@ -168,9 +166,9 @@ function initializeTimer(containerId, timeLimit, startOn) {
 
   function toggleTimer() {
     if (active) {
-      document.getElementById(`${containerId}-circle`).style.fill = '#fcb';
+      document.getElementById(`${containerId}-circle`).style.fill = "#fcb";
     } else {
-      document.getElementById(`${containerId}-circle`).style.fill = '';
+      document.getElementById(`${containerId}-circle`).style.fill = "";
     }
     active = !active;
   }
@@ -189,16 +187,16 @@ function initializeTimer(containerId, timeLimit, startOn) {
   function setRemainingPathColor(timeLeft) {
     const pathId = `${containerId}-path-remaining`;
 
-    for ( let i = 0; i < THRESHOLDS.length; i+=1 ) {
+    for (let i = 0; i < THRESHOLDS.length; i += 1) {
       if (timeLeft < THRESHOLDS[i]) {
-        document.getElementById(pathId).classList.remove(`lvl${i-1}`);
+        document.getElementById(pathId).classList.remove(`lvl${i - 1}`);
         document.getElementById(pathId).classList.add(`lvl${i}`);
       }
     }
   }
 
   function setCircleDasharray() {
-    let circle_proportions = timeLeft / timeLimit * FULL_DASH_ARRAY + " ";
+    let circle_proportions = (timeLeft / timeLimit) * FULL_DASH_ARRAY + " ";
     circle_proportions += (1 - timeLeft / timeLimit) * FULL_DASH_ARRAY;
 
     document
